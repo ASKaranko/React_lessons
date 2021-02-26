@@ -1,5 +1,22 @@
 import React, { Component } from 'react';
-import './App.css';
+
+// благодаря css модулям создается объект classes
+// localIdentName добавляет для каждого компонента свои хеш
+// поэтому этот класс будет уникальным для каждого компонента
+/*
+And if you import the CSS file (in the same way) in another component,
+the classes  object there will hold a Post  property which yields
+a different (!) CSS class name. Hence it's scoped to a given component
+
+By the way, if you somehow also want to define
+a global (i.e. un-transformed) CSS class in such a .css  file,
+you can prefix the selector with :global
+:global .Post { ... }
+
+Now you can use className="Post"
+anywhere in your app and receive that styling.
+ */
+import classes from './App.css';
 import Person from "./Person/Person";
 
 // const StyledButton = styled.button`
@@ -78,6 +95,8 @@ class App extends Component {
     // };
 
     let persons = null;
+    let btnClass = '';
+
     if (this.state.showPersons) {
 
       persons = (
@@ -98,23 +117,26 @@ class App extends Component {
       //   backgroundColor: 'tomato',
       //   color: 'black'
       // }
+
+      //Синтаксис с css-модулями
+      btnClass = classes.Red;
     }
 
-    const classes = [];
+    const assignedClasses = [];
     if (this.state.persons.length <= 2) {
-			classes.push('red');
+      assignedClasses.push(classes.red);
 		}
     if (this.state.persons.length <= 1) {
-    	classes.push('bold');
+      assignedClasses.push(classes.bold);
 		}
 
     return (
 
-          <div className="App">
+          <div className={classes.App}>
             <h1>Hi, I'm a React App</h1>
-            <p className={classes.join(' ')}>This is really working!</p>
+            <p className={assignedClasses.join(' ')}>This is really working!</p>
             <button
-                className='button'
+                className={btnClass}
                 onClick={this.togglePersonsHandler}>Toggle Persons
             </button>
             {persons}
